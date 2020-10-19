@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" class="full-height">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./styles/style.min.css" />
+    <link rel="stylesheet" href="./libs/leaflet/leaflet.min.css" />
+    <link rel="stylesheet" href="./libs/jqueryui/jquery-ui.min.css" />
+    <link rel="stylesheet" href="./libs/fontawesome/fontawesome.min.css" />
+    <link rel="stylesheet" href="./libs/fontawesome/solid.min.css" />
+    <link
+      rel="stylesheet"
+      href="./libs/leaflet-extra-markers/leaflet.extra-markers.min.css"
+    />
+    <link rel="stylesheet" href="./libs/markercluster/MarkerCluster.css" />
+
+    <title>Gazetteer</title>
+  </head>
+
+  <body class="full-height">
+    <div id="preloader">
+      <div id="loader">
+        <img src="./images/gazetteerloader.png" id="loadImage" />
+        <div class="spinner-border text-danger" role="status" id="spinner">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar navbar-expand-lg bg-dark navbar-dark navbar-fixed-top">
+      <img src="./images/gazetteer.png" id="logo" />
+      <button
+        class="navbar-toggler text-light border-danger badge"
+        type="button"
+        data-toggle="collapse"
+        data-target="#details"
+        id="detailButton"
+      >
+        <span>Details </span>
+      </button>
+      <ul
+        class="collapse navbar-collapse text-light list-unstyled"
+        id="details"
+      >
+        <li><img id="flag" class="info" /></li>
+        <li class="info">Capital:&nbsp;<span id="capital"></span></li>
+        <li class="info">Area(km<sup>2</sup>):&nbsp;<span id="area"></span></li>
+        <li class="info">Population:&nbsp;<span id="population"></span></li>
+        <li class="info">Currency:&nbsp; <span id="currency"></span></li>
+      </ul>
+    </div>
+
+    <div id="search">
+      <input
+        type="type"
+        id="countrySearch"
+        placeholder="Search..."
+        class="bg-dark text-light text-center border-light"
+      />
+    </div>
+
+    <div class="container-fluid fill-height bg-dark">
+      <div class="row bg-dark" id="map">
+        <div class="controlsdiv"></div>
+      </div>
+    </div>
+
+    <footer>
+      <div
+        class="btn-group btn-group-toggle fixed-bottom"
+        data-toggle="buttons"
+        id="options"
+      >
+        <label class="btn badge btn-secondary active">
+          <input type="radio" name="options" id="earthquakeBtn" />
+          Earthquakes
+        </label>
+        <label class="btn badge btn-secondary">
+          <input type="radio" name="options" id="cityBtn" /> Cities
+        </label>
+        <label class="btn badge btn-secondary">
+          <input type="radio" name="options" id="monumentBtn" /> Monuments
+        </label>
+      </div>
+    </footer>
+
+    <div class="modal" tabindex="-1" id="infoModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-secondary">
+            <h5 class="modal-title text-light" id="modalTitle"></h5>
+            <br />
+
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="accordion" id="infoAccordion">
+            <div
+              class="collapse show"
+              id="generalInfo"
+              data-parent="#infoAccordion"
+            >
+              <div class="modal-body bg-dark text-light">
+                <ul id="modalInfo" class="text-light"></ul>
+              </div>
+            </div>
+            <div class="collapse" id="wikiInfo" data-parent="#infoAccordion">
+              <div class="modal-body bg-dark text-light">
+                <p id="modalBody"></p>
+              </div>
+            </div>
+            <div class="collapse" id="weatherInfo" data-parent="#infoAccordion">
+              <div class="modal-body bg-dark text-light">
+                <img id="weatherImage" src="" />
+                <ul id="weatherModalList"></ul>
+              </div>
+            </div>
+            <div
+              class="collapse"
+              id="forecastInfo"
+              data-parent="#infoAccordion"
+            >
+              <div class="modal-body bg-dark text-light">
+                <ul class="list-group">
+                  <li class="list-group-item flex-fill">
+                    <img id="forecastImg1" class="forecastImg" />
+                    <ul id="forecast1" class="forecastList"></ul>
+                  </li>
+                  <li class="list-group-item flex-fill">
+                    <img id="forecastImg2" class="forecastImg" />
+                    <ul id="forecast2" class="forecastList"></ul>
+                  </li>
+                  <li class="list-group-item flex-fill">
+                    <img id="forecastImg3" class="forecastImg" />
+                    <ul id="forecast3" class="forecastList"></ul>
+                  </li>
+                  <li class="list-group-item flex-fill">
+                    <img id="forecastImg4" class="forecastImg" />
+                    <ul id="forecast4" class="forecastList"></ul>
+                  </li>
+                  <li class="list-group-item flex-fill">
+                    <img id="forecastImg5" class="forecastImg" />
+                    <ul id="forecast5" class="forecastList"></ul>
+                  </li>
+                  <li class="list-group-item flex-fill">
+                    <img id="forecastImg6" class="forecastImg" />
+                    <ul id="forecast6" class="forecastList"></ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer bg-dark">
+            <button
+              type="button"
+              class="btn btn-secondary badge"
+              data-target="#generalInfo"
+              data-toggle="collapse"
+              aria-expanded="true"
+              aria-controls="collapseExample"
+            >
+              Info
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary badge"
+              data-target="#wikiInfo"
+              data-toggle="collapse"
+              aria-expanded="false"
+              aria-controls="collapseExample"
+            >
+              Wiki
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary badge"
+              data-target="#weatherInfo"
+              data-toggle="collapse"
+              aria-expanded="false"
+              aria-controls="collapseExample"
+            >
+              Weather
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary badge"
+              data-target="#forecastInfo"
+              data-toggle="collapse"
+              aria-expanded="false"
+              aria-controls="collapseExample"
+            >
+              Forecast
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger badge"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./libs/leaflet/leaflet.js"></script>
+    <script src="./libs/jquery/jquery.min.js"></script>
+    <script src="./libs/jqueryui/jquery-ui.min.js"></script>
+    <script src="./libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="./libs/leaflet-extra-markers/leaflet.extra-markers.min.js"></script>
+    <script src="./libs/markercluster/leaflet.markercluster.min.js"></script>
+    <script src="./scripts/country.min.js"></script>
+    <script src="./scripts/point-of-interest.min.js"></script>
+    <script src="./scripts/script.min.js"></script>
+  </body>
+</html>
