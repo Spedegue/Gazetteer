@@ -1,15 +1,12 @@
 //ToDo
 // Hide API keys =  weather
-//Restructure code to be more logical
-//Massive refactor to include new geoJSON using two letter code
+
 
 //Global variables to store the users coordinates, coutries for the autoselect, and polygon of current country
 let userCoords = {};
 const countryList = [];
 let countryOutline;
 
-const weatherUrl =
-  'https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid=3f47e7abc196db007ccb9df586b8592a';
 
 //Set details for different map displays
 const dark = L.tileLayer(
