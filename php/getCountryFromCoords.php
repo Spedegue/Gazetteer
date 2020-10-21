@@ -2,7 +2,7 @@
 
 //$url = 'http://api.geonames.org/countryCodeJSON?lat='.$_REQUEST['lat'].'&lng='.$_REQUEST['long'].'&username=spedegue';
 
-$url = 'https://api.opencagedata.com/geocode/v1/json?q='.$_REQUEST['lat'].','.$_REQUEST['long'].'&pretty=1&key=81f5e9c4ee804a6a93fd7428a9534bed';
+$url = 'https://api.opencagedata.com/geocode/v1/json?q='.$_REQUEST['lat'].','.$_REQUEST['long'].'&pretty=1&key=';
 $ch = curl_init();
 
 //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
